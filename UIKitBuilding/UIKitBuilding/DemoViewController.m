@@ -32,45 +32,45 @@
         case 1:
             [self buildingButton];
             break;
-            case 2:
+        case 2:
             [self buttonClickCallback];
             break;
-            case 3:
+        case 3:
             [self buildingImageView];
             break;
-            case 4:
+        case 4:
             [self buildingLabel];
             break;
-            case 5:
+        case 5:
             [self fixNavigationBarColor];
             break;
-            case 6:
+        case 6:
             [self buildingScrollView];
             break;
-            case 7:
+        case 7:
             [self buildingTableView];
             break;
-            case 8:
+        case 8:
             // 看这个方法
             // tableView: willDisplayCell: forRowAtIndexPath:
             [self buildingTableView];
             break;
-            case 9:
+        case 9:
             [self buildingTextField];
             break;
-            case 10:
+        case 10:
             [self buildingTextView];
             break;
-            case 11:
+        case 11:
             [self buildingView];
             break;
-            case 12:
+        case 12:
             [self cutCorner];
             break;
-            case 13:
+        case 13:
             [self clickCallback];
             break;
-            case 14:
+        case 14:
             // #import "UIView+YSTextInputKeyboard.h" 需要导入此头文件
             [self keyboardBlock];
             break;
@@ -81,14 +81,14 @@
 
 /**
  * 注意：
-     这里只是列举了某些方法，具体的需要大家自己去查看，
-     这里只是为了给大家展示基本的使用方法，大家可以根据
-     自己的习惯对这个库进行相应的修改，来提高开发的效率
+    这里只是列举了某些方法，具体的需要大家自己去查看，
+    这里只是为了给大家展示基本的使用方法，大家可以根据
+    自己的习惯对这个库进行相应的修改，来提高开发的效率
    另外：
-     建议大家可以在创建视图的时候不去设置frame，
-     只是单纯的创建一个视图对象并设置一些相关的属性，
-     然后结合 masonry 或其他的第三方库来进行约束布局，
-     这样会起到事半功倍的效果
+    建议大家可以在创建视图的时候不去设置frame，
+    只是单纯的创建一个视图对象并设置一些相关的属性，
+    然后结合 masonry 或其他的第三方库来进行约束布局，
+    这样会起到事半功倍的效果
  */
 
 - (void)buildingAlertView {
@@ -137,12 +137,13 @@
 }
 
 - (void)buildingTableView {
-    UITableView *tableView = Building_UITableViewWithStyleAndFrame(self.view.bounds, UITableViewStylePlain, self, UITableViewCellSeparatorStyleSingleLine);
-    tableView.backgroundColor = [UIColor lightGrayColor];
+    UITableView *tableView = Building_UITableViewWithStyleAndFrame(CGRectMake(0, 64, kScreenWidth, kScreenHeight - 64), UITableViewStylePlain, self, UITableViewCellSeparatorStyleSingleLine);
+    tableView.tableFooterView = [[UIView alloc] init];
+    [self.view addSubview:tableView];
 }
 
 - (void)buildingTextField {
-    Building_UITextFieldWithFrameWithSuperView(self.view, CGRectMake(30, 100, 300, 60), [UIColor darkTextColor], [UIFont systemFontOfSize:13], 0, @"请在这里输入");
+    Building_UITextFieldWithFrameWithSuperView(self.view, CGRectMake(30, 100, 300, 40), [UIColor darkTextColor], [UIFont systemFontOfSize:13], 0, @"请在这里输入");
 }
 
 - (void)buildingTextView {
@@ -165,15 +166,14 @@
 - (void)clickCallback {
     UIView *view = Building_UIViewWithFrameAndSuperView(self.view, CGRectMake(10, 100, 100, 100));
     view.backgroundColor = [UIColor orangeColor];
-
+    
     [view clickedOnViewWithCompletion:^(id clickOnView) {
         [self buildingAlertView];
     }];
 }
 
 - (void)keyboardBlock {
-    UITextField *textField = Building_UITextFieldWithFrameWithSuperView(self.view, CGRectMake(30, kScreenHeight - 100, kScreenWidth - 60, 50), [UIColor darkTextColor], [UIFont systemFontOfSize:13], 0, @"请在这里输入");
-    
+    UITextField *textField = Building_UITextFieldWithFrameWithSuperView(self.view, CGRectMake(30, kScreenHeight - 100, kScreenWidth - 60, 40), [UIColor darkTextColor], [UIFont systemFontOfSize:13], 0, @"请在这里输入");
     textField.kbMoving.kbMovingView = textField;
 }
 
@@ -214,19 +214,27 @@
     return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    for (UIView *subview in self.view.subviews) {
+        if ([subview isKindOfClass:[UITextField  class]] || [subview isKindOfClass:[UITextView class]]) {
+            [subview resignFirstResponder];
+        }
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
